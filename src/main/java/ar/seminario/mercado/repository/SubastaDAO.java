@@ -1,39 +1,28 @@
 package ar.seminario.mercado.repository;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import org.ektorp.CouchDbConnector;
+import org.ektorp.DocumentNotFoundException;
+import org.ektorp.support.CouchDbRepositorySupport;
 
 import ar.seminario.mercado.Subasta;
 import ar.seminario.mercado.dao.exceptions.NotFoundException;
 
-public class SubastaDAO {
+public class SubastaDAO extends CouchDbRepositorySupport<Subasta> {
 	
-	private Map<ObjectId, Subasta> subastas;
-	public SubastaDAO() {
-		this.subastas = new HashMap<ObjectId, Subasta>();
+	public SubastaDAO(CouchDbConnector db) {
+		super(Subasta.class, db);
 	}
 
 	public Subasta store(Subasta nuevaSubasta) {
-		ObjectId id = new ObjectId();
-		nuevaSubasta.setId(id);
-		this.subastas.put(id, nuevaSubasta);
+		this.add(nuevaSubasta);
 		return nuevaSubasta;
 	}
 
 	public Subasta find(ObjectId id) throws NotFoundException {
-		if (!this.subastas.containsKey(id)) {
+		try {
+			return this.get(id.getDocumentId());
+		} catch (DocumentNotFoundException dnfe) {
 			throw new NotFoundException(Subasta.class, id);
 		}
-		return this.subastas.get(id);
 	}
-
-	public Collection<Subasta> getAll() {
-		return this.subastas.values();
-	}
-
-	public void remove(Subasta nuevaSubasta) {
-		this.subastas.remove(nuevaSubasta.getId());
-	}
-
 }

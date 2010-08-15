@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 public class Subasta extends Persistent {
 
 	private List<Oferta> ofertas = new ArrayList<Oferta>();
@@ -12,6 +14,7 @@ public class Subasta extends Persistent {
 		return this.ofertas;
 	}
 
+	@JsonIgnore
 	public boolean isFinalizada() {
 		// TODO Auto-generated method stub
 		return false;
@@ -21,6 +24,7 @@ public class Subasta extends Persistent {
 		this.ofertas.add(0, unaOferta);
 	}
 
+	@JsonIgnore
 	public Oferta getMejorOferta() {
 		return this.ofertas.get(0);
 	}

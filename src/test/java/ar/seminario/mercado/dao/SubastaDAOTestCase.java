@@ -2,6 +2,10 @@ package ar.seminario.mercado.dao;
 
 import static org.junit.Assert.*;
 
+import org.ektorp.http.HttpClient;
+import org.ektorp.http.StdHttpClient;
+import org.ektorp.impl.StdCouchDbConnector;
+import org.ektorp.impl.StdCouchDbInstance;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,7 +20,11 @@ public class SubastaDAOTestCase {
 
 	@Before
 	public void crearSubastaDAO() {
-		dao = new SubastaDAO();
+		HttpClient client = new StdHttpClient.Builder().host("localhost").port(5984).build();
+		StdCouchDbInstance dbInstance = new StdCouchDbInstance(client);
+		dbInstance.deleteDatabase("test_ml");
+		StdCouchDbConnector db = new StdCouchDbConnector("test_ml", dbInstance);
+		dao = new SubastaDAO(db);
 	}
 	@Test
 	public void guardando() throws Exception {
@@ -33,7 +41,7 @@ public class SubastaDAOTestCase {
 	@Test
 	public void recuperandoInexistente() throws Exception {
 		try {
-			dao.find(new ObjectId());
+			dao.find(new ObjectId("23048023948"));
 			fail("Exception not raised :(");
 		} catch(NotFoundException nfe) {
 			// OK :)
@@ -56,7 +64,7 @@ public class SubastaDAOTestCase {
 		Subasta nuevaSubasta = new Subasta();
 		dao.store(nuevaSubasta);
 		dao.remove(nuevaSubasta);
-		assertEquals(0, dao.getAll().size());
+			assertEquals(0, dao.getAll().size());
 		try {
 			dao.find(nuevaSubasta.getId());
 			fail("No exception thrown");
