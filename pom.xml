@@ -15,5 +15,12 @@
   		<type>jar</type>
   		<scope>test</scope>
   	</dependency>
+  	<dependency>
+  		<groupId>org.ektorp</groupId>
+  		<artifactId>org.ektorp</artifactId>
+  		<version>0.9.4</version>
+  		<type>jar</type>
+  		<scope>runtime</scope>
+  	</dependency>
   </dependencies>
 </project>
