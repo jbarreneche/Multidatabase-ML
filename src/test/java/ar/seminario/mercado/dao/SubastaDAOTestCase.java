@@ -21,6 +21,11 @@ public class SubastaDAOTestCase {
 		Subasta nuevaSubasta = new Subasta();
 		dao.save(nuevaSubasta);
 		assertNotNull(nuevaSubasta.getId());
-		
+	}
+	@Test
+	public void recuperando() throws Exception {
+		Subasta nuevaSubasta = new Subasta();
+		dao.save(nuevaSubasta);
+		assertEquals(nuevaSubasta, dao.find(nuevaSubasta.getId()));
 	}
 }
