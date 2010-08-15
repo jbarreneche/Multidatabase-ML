@@ -1,7 +1,12 @@
 package ar.seminario.mercado.dao;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
+import org.jredis.JRedis;
+import org.jredis.ri.alphazero.JRedisClient;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,8 +20,10 @@ public class SubastaDAOTestCase {
 	private SubastaDAO dao;
 
 	@Before
-	public void crearSubastaDAO() {
-		dao = new SubastaDAO();
+	public void crearSubastaDAO() throws Exception{
+		JRedis	jredis = new JRedisClient("localhost", 6379, "jredis", 0);
+		jredis.flushdb();
+		dao = new SubastaDAO(jredis);
 	}
 	@Test
 	public void guardando() throws Exception {
@@ -33,10 +40,10 @@ public class SubastaDAOTestCase {
 	@Test
 	public void recuperandoInexistente() throws Exception {
 		try {
-			dao.find(new ObjectId());
+			dao.find(new ObjectId(2L));
 			fail("Exception not raised :(");
 		} catch(NotFoundException nfe) {
-			// OK :)
+			// OK :)t
 		}
 	}
 	@Test
