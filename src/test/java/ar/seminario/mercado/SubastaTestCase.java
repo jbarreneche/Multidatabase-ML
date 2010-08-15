@@ -14,6 +14,7 @@ public class SubastaTestCase {
 	}
 	@Test
 	public void nuevaSubasta() throws Exception {
+		assertNull(unaSubasta.getId());
 		assertTrue(unaSubasta.getOfertas().isEmpty());
 		assertFalse(unaSubasta.isFinalizada());
 	}
