@@ -28,4 +28,16 @@ public class SubastaDAOTestCase {
 		dao.save(nuevaSubasta);
 		assertEquals(nuevaSubasta, dao.find(nuevaSubasta.getId()));
 	}
+	@Test
+	public void recuperandoTodos() throws Exception {
+		assertNotNull(dao.getAll());
+		assertEquals(0, dao.getAll().size());
+		Subasta subasta1 = new Subasta();
+		Subasta subasta2 = new Subasta();
+		dao.save(subasta1);
+		dao.save(subasta2);
+		assertEquals(2, dao.getAll().size());
+		assertTrue(dao.getAll().contains(subasta1));
+		assertTrue(dao.getAll().contains(subasta2));
+	}
 }
